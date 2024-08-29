@@ -2,15 +2,23 @@ import cv2
 import numpy as np
 
 # Load YOLO
-print("Loading YOLO...")
-net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
-layer_names = net.getLayerNames()
-output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
+try:
+    print("Loading YOLO...")
+    net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
+    layer_names = net.getLayerNames()
+    output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
+except cv2.error as e:
+    print(f"Error loading YOLO: {e}")
+    exit()
 
 # Load class names
-print("Loading class names...")
-with open("coco.names", "r") as f:
-    classes = [line.strip() for line in f.readlines()]
+try:
+    print("Loading class names...")
+    with open("coco.names", "r") as f:
+        classes = [line.strip() for line in f.readlines()]
+except FileNotFoundError:
+    print("Error: coco.names file not found.")
+    exit()
 
 # Initialize video capture
 video_path = "Birds Free Stock Footage - Beautiful Flying Birds Stock Footage (No Copyright)__Free To Use Videos.mp4"
